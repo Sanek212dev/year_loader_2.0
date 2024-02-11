@@ -1,0 +1,58 @@
+package com.example.year_loader
+
+import android.graphics.Color
+import android.graphics.PorterDuff
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.ProgressBar
+import android.widget.TextView
+import java.time.LocalDate
+import java.time.Month
+import java.time.temporal.ChronoUnit
+import java.text.SimpleDateFormat
+import java.time.LocalDate.now
+import java.util.*
+import java.lang.System.getProperty
+import kotlin.math.abs
+import java.util.GregorianCalendar
+
+class DayLoader : AppCompatActivity() {
+
+    private lateinit var progressBar: ProgressBar
+    private lateinit var textView: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_day_loader)
+
+        progressBar = findViewById<ProgressBar>(R.id.progressBarDay)
+        textView = findViewById<TextView>(R.id.textViewDay)
+
+
+
+        val calendar = Calendar.getInstance()
+        val currentHour: Int = calendar.get(Calendar.HOUR_OF_DAY)
+        val currentMinut: Int = calendar.get(Calendar.MINUTE)
+
+        textView.text = (((currentHour * 60 + currentMinut) * 100 / 1440).toString() + "%")
+        progressBar.progress = (((currentHour * 60 + currentMinut) * 100 / 1440).toInt() + progressBar.getProgress())
+
+        /*
+        val calendar = GregorianCalendar.getInstance()
+        val startDate = LocalDate.of(2024, calendar.get(GregorianCalendar.MONTH) + 1, 1)
+        val now = LocalDate.now()
+        val daysPassed = ChronoUnit.DAYS.between(startDate, now)
+
+        val daysInCurrentMonth = now.lengthOfMonth()
+
+        textView.text = ((daysPassed * 100 / daysInCurrentMonth).toString() + "%")
+        progressBar.progress = ((daysPassed * 100 / daysInCurrentMonth).toInt() + progressBar.getProgress())
+        */
+
+        // Color of ProgressBar
+        val progressDrawable = progressBar.progressDrawable.mutate()
+        progressDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        progressBar.progressDrawable = progressDrawable
+    }
+
+}
